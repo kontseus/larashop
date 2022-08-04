@@ -17,16 +17,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(function() {
+    Route::get('/dashboard', function () {
+        return view('dashboard', ['role' => 'Admin']);
+    })->name('dashboard');
+
+    Route::resource('products', \App\Http\Controllers\Admin\ProductsController::class)->except(['show']);
+});
+
+
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard', ['role' => 'Customer']);
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
-
-/*Route::prefix('posts')->name('posts')->groupe(function(){
-    Route::get('/', [App\Http\Controllers\Controller::class, 'index']);
-    Route::post('/', [App\Http\Controllers\Controller::class, 'store'])->name('.store');
-    Route::get('create', [App\Http\Controllers\Controller::class], 'index')->name('.create');
-    Route::get('{post}/edit', [App\Http\Controllers\Controller::class], 'index')->name('.update');
-});*/
-
+require __DIR__ . '/auth.php';
