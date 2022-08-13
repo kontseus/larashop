@@ -77,8 +77,25 @@
     </nav>
 
     <main class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    @if(session('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if(session('warn'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('warn') }}
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
         @yield('content')
     </main>
 </div>
+@stack('footer-scripts')
 </body>
 </html>

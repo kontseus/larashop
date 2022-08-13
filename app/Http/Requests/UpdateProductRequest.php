@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateProductRequest extends FormRequest
+class UpdateProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class CreateProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check() && isAdmin(auth()->user());
+        return isAdmin(auth()->user());
     }
 
     /**
@@ -23,6 +23,9 @@ class CreateProductRequest extends FormRequest
      */
     public function rules()
     {
+        $productId = $this->route('product')->id;
+        dd($productId);
+
         return [
             'title' => ['required', 'string', 'min:3', 'unique:products'],
             'description' => ['required', 'string', 'min:20'],
