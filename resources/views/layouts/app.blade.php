@@ -39,6 +39,12 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('cart') }}">
+                            {{ __('Cart') }} @if(Cart::instance('cart')->count() > 0) -
+                            <strong>{{ Cart::instance('cart')->count() }}</strong> @endif
+                        </a>
+                    </li>
                     <!-- Authentication Links -->
                     @guest
                         @if (Route::has('login'))

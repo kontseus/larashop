@@ -3,12 +3,13 @@
 namespace App\Services;
 
 use App\Services\Contracts\FileStorageServiceContract;
+use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class FileStorageService implements FileStorageServiceContract
+class FileStorageService extends Facade implements FileStorageServiceContract
 {
 
     public static function upload(UploadedFile|string $file): string
