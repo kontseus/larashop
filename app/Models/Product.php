@@ -35,6 +35,16 @@ class Product extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
+    public function followers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'wish_list',
+            'product_id',
+            'user_id'
+        );
+    }
+
     public function available(): Attribute
     {
         return new Attribute(

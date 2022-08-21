@@ -82,16 +82,16 @@
                     </div>
                 </form>
                 <hr>
-                {{--                @if(is_user_followed($product))--}}
-                {{--                    <form action="{{ route('wishlist.delete', $product) }}" method="POST">--}}
-                {{--                        @csrf--}}
-                {{--                        @method('DELETE')--}}
-                {{--                        <input type="submit" class="btn btn-danger" value="Remove from Wish List">--}}
-                {{--                    </form>--}}
-                {{--                @else--}}
-                {{--                    <a href="{{ route('wishlist.add', $product) }}"--}}
-                {{--                       class="btn btn-success">{{ __('Add to Wish List') }}</a>--}}
-                {{--                @endif--}}
+                @if(is_user_followed($product))
+                    <form action="{{ route('wishlist.delete', $product) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input type="submit" class="btn btn-danger" value="Remove from Wish List">
+                    </form>
+                @else
+                    <a href="{{ route('wishlist.add', $product) }}"
+                       class="btn btn-success">{{ __('Add to Wish List') }}</a>
+                @endif
             @endauth
         </div>
     </div>
