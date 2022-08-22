@@ -19,7 +19,7 @@ RUN apt update && apt install -y \
     && docker-php-ext-configure gd \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install pdo_mysql \
-#    && docker-php-ext-install mysqli \
+    && docker-php-ext-install mysqli \
     && docker-php-ext-install zip \
     && docker-php-ext-install pdo_pgsql \
     && docker-php-source delete

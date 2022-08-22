@@ -12,14 +12,14 @@ services:
     adminer:
         image: adminer
         ports:
-            - "8083:8080"
+            - "8081:8080"
         restart: always
         networks:
             - laravel
     mysql:
         image: "mysql:8.0"
         ports:
-            - "3306:3306"
+            - "33060:3306"
         restart: always
         environment:
             MYSQL_ROOT_PASSWORD: secret
@@ -28,7 +28,7 @@ services:
         networks:
             - laravel
     pgsql:
-        image: "postgres:14.4"
+        image: "postgres:14"
         ports:
             - "5432:5432"
         restart: always
@@ -44,7 +44,7 @@ services:
         build:
             context: .docker/php # ~.docker/php/Dockerfile
         ports:
-            - "8082:80"
+            - "8080:80"
         restart: always
         volumes:
             -   .:/var/www/html
