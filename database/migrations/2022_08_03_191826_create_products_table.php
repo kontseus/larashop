@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
             $table->string('title')->unique();
             $table->text('description');
             $table->string('short_description', 150)->nullable();
