@@ -15,11 +15,11 @@ class ProductsController extends Controller
         return view('products.index', compact('products'));
     }
 
-//    public function show(Product $product): Renderable
-//    {
-//        $userRating = $product->getUserRating();
-//        return view('products.show', compact('product', 'userRating'));
-//    }
+    public function show(Product $product): Renderable
+    {
+        $userRating = $product->getUserRating();
+        return view('products.show', compact('product', 'userRating'));
+    }
 
     public function addRating(Request $request, Product $product)
     {
