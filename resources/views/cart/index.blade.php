@@ -50,7 +50,7 @@
             </div>
             @auth
                 <div class="col-md-12 text-right">
-                    {{--                    <a href="{{ route('checkout') }}" class="btn btn-outline-success">{{ __('Proceed to checkout') }}</a>--}}
+                    <a href="{{ route('checkout') }}" class="btn btn-outline-success">{{ __('Proceed to checkout') }}</a>
                 </div>
             @endauth
         </div>
