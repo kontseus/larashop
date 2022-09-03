@@ -2,7 +2,7 @@
     <h4>Get info about your order in telegram!</h4>
     <br>
     <script async
-            src="https://telegram.org/js/telegram-widget.js?15"
+            src="https://telegram.org/js/telegram-widget.js?19"
             data-telegram-login="{{ config('services.telegram-bot-api.name') }}"
             data-size="large"
             data-radius="0"
