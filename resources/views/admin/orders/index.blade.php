@@ -39,7 +39,7 @@
                             <td class="text-center" scope="col">{{ __($order->total . '$') }}</td>
                             <td class="text-center" scope="col">
                                 <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-info">Edit</a>
-                                {{--                                <a href="{{ route('orders.generate.invoice', $order) }}" class="btn btn-success">Invoice</a>--}}
+                                <a href="{{ route('orders.generate.invoice', $order) }}" class="btn btn-success">Invoice</a>
                                 <a href="" class="btn btn-danger">Remove</a>
                             </td>
                         </tr>

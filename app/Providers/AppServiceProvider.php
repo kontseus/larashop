@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Repositories\Contracts\OrderRepositoryContract;
 use App\Repositories\Contracts\ProductRepositoryContract;
+use App\Services\Contracts\InvoicesServiceContract;
+use App\Services\InvoicesService;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use Database\Factories\UserFactory;
@@ -21,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            OrderRepositoryContract::class,
-            OrderRepository::class
+            InvoicesServiceContract::class,
+            InvoicesService::class
         );
     }
 
