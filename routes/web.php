@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Services\ImagesService;
 use App\Http\Controllers\HomeController;
+use App\Jobs\OrderCreatedNotificationJob;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,11 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('send', function () {
+    $order = \App\Models\Order::all()->random();
+    OrderCreatedNotificationJob::dispatch($order)->onQueue('emails');
+});
 
 Route::delete(
     'ajax/images/{image}',
@@ -47,6 +53,11 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::resource('categories', \App\Http\Controllers\Admin\CategoriesController::class)->except(['show']);
 });
 
+Route::name('orders')->group(function () {
+    Route::get('orders', [\App\Http\Controllers\Admin\OrdersController::class, 'index'])->name('.index');
+    Route::get('orders/{order}/edit', [\App\Http\Controllers\Admin\OrdersController::class, 'edit'])->name('.edit');
+    Route::put('orders/{order}', [\App\Http\Controllers\Admin\OrdersController::class, 'update'])->name('.update');
+});
 
 Route::middleware('auth')->group(function() {
     Route::post('product/{product}/rating/add', [\App\Http\Controllers\ProductsController::class, 'addRating'])->name('product.rating.add');
@@ -64,6 +75,7 @@ Route::middleware('auth')->group(function() {
             ->name('update')
             ->middleware('can:update,user');
         Route::get('wishlist', \App\Http\Controllers\Account\WishListController::class)->name('wishlist');
+        Route::get('telegram/callback', \App\Http\Controllers\TelegramCallbackController::class)->name('telegram.callback');
     });
 });
 
