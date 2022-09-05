@@ -36,5 +36,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrapFive();
+        \Illuminate\Filesystem\AwsS3V3Adapter::macro('getClient', fn() => $this->client);
     }
 }

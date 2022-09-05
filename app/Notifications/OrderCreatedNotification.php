@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Mail\Orders\NewOrderForCustomer;
+use App\Services\AwsPublicLinkService;
 use App\Services\Contracts\InvoicesServiceContract;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -44,11 +45,12 @@ class OrderCreatedNotification extends Notification
     public function toTelegram($notifiable)
     {
         $invoiceService = app()->make(InvoicesServiceContract::class);
-        $pdf = $invoiceService->generate($notifiable)->save('public');
+        $pdf = $invoiceService->generate($notifiable)->save('s3');
+        $fileLink = AwsPublicLinkService::generate($pdf->filename);
 
         return  TelegramFile::create()
             ->to($notifiable->user->telegram_id)
             ->content("Hello, your order #{$notifiable->id} was created")
-            ->document($pdf->url(), $pdf->filename);
+            ->document($fileLink, $pdf->filename);
     }
 }
