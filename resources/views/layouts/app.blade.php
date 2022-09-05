@@ -12,9 +12,9 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <link href="{{ asset('css/iziToast.css') }}" rel="stylesheet">
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/iziToast.css', 'resources/js/iziToast.js'])
 </head>
 <body>
 <div id="app">
@@ -23,7 +23,13 @@
             <a class="navbar-brand" href="{{ url('/') }}">
                 {{ config('app.name', 'Laravel') }}
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -60,7 +66,8 @@
                         @endif
                     @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>
 
@@ -90,21 +97,23 @@
             <div class="row">
                 <div class="col-sm-12">
                     @if(session('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
+                        @php
+                            notify()->success(session('success'))
+                        @endphp
                     @endif
                     @if(session('warn'))
-                        <div class="alert alert-danger" role="alert">
-                            {{ session('warn') }}
-                        </div>
+                        @php
+                            notify()->warning(session('warn'))
+                        @endphp
                     @endif
                 </div>
             </div>
         </div>
         @yield('content')
     </main>
+    <script src="{{ asset('js/iziToast.js') }}"></script>
 </div>
+@include('vendor.lara-izitoast.toast')
 @stack('footer-scripts')
 </body>
 </html>

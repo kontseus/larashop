@@ -1,5 +1,6 @@
 import './bootstrap';
 import $ from 'jquery';
+// import './iziToast'
 
 const headers = {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -59,10 +60,19 @@ paypal.Buttons({
             },
             error: function (data) {
                 const responseJson = data.responseJSON;
-                console.log('error', responseJson)
+                onsole.log('responseJson', responseJson);
+                if (typeof responseJson !== 'undefined') {
+                    let errorTemplate = `<span class="invalid-feedback d-inline" role="alert">
+                                        <strong>___</strong>
+                                    </span>`;
+
+                    for (let [field, message] of Object.entries(responseJson.errors)) {
+                        let $input = $(`input[name="${field}"]`);
+                        $input.after(errorTemplate.replace('___', message[0]));
+                    }
+                }
             }
-        })
-            .then((order) => order.vendor_order_id)
+        }).then((order) => order.vendor_order_id)
             .catch(function (error) {
                 return;
             });
@@ -76,8 +86,32 @@ paypal.Buttons({
                 headers: headers
             })
                 .then((res) => res.json())
-                .then(function (orderData) {
-                    console.log(orderData)
+                .catch(function (orderData) {
+                    var errorDetail = Array.isArray(orderData.details) && orderData.details[0];
+
+                    if (errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED') {
+                        return actions.restart();
+                    }
+
+                    if (errorDetail) {
+                        let iziToastOpts = {
+                            title: 'Sorry, your transaction could not be processed.',
+                            position: 'topCenter'
+                        };
+
+                        if (errorDetail.description) {
+                            iziToastOpts['message'] = errorDetail.description;
+                        }
+
+                        iziToast.error(iziToastOpts);
+                        return false;
+                    }
+
+                    // iziToast.success({
+                    //     title: 'Payment process was successfully done!',
+                    //     position: 'topCenter',
+                    //     onClosing: () => { window.location.href = `/paypal/order/${orderData.orderId}/thankyou` }
+                    // });
                 });
         }
     }
