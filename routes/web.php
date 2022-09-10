@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Services\ImagesService;
 use App\Http\Controllers\HomeController;
 use App\Jobs\OrderCreatedNotificationJob;
+use App\Services\AwsPublicLinkService;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +22,8 @@ Route::get('invoice', function () {
     $service = new \App\Services\InvoicesService();
     $invoice = $service->generate($order);
 
-    $test = $invoice->save('public');
-    dd($test->url());
+    $test = $invoice->save('s3');
+    dd(AwsPublicLinkService::generate($test->filename));
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -30,6 +31,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('send', function () {
     $order = \App\Models\Order::all()->random();
     OrderCreatedNotificationJob::dispatch($order)->onQueue('emails');
+});
+
+Route::get('test', function () {
+    $product = \App\Models\Product::find(1);
+    dd(\Illuminate\Support\Facades\Cache::get("products.thumbnail.{$product->thumbnail}"));
 });
 
 Route::delete(
