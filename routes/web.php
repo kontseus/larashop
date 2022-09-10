@@ -21,8 +21,8 @@ Route::get('invoice', function () {
     $service = new \App\Services\InvoicesService();
     $invoice = $service->generate($order);
 
-    $test = $invoice->save('public');
-    dd($test->url());
+    $test = $invoice->save('s3');
+    dd(AwsPublicLinkService::generate($test->filename));
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -30,6 +30,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('send', function () {
     $order = \App\Models\Order::all()->random();
     OrderCreatedNotificationJob::dispatch($order)->onQueue('emails');
+});
+
+Route::get('test', function () {
+    $product = \App\Models\Product::find(1);
+    dd(\Illuminate\Support\Facades\Cache::get("products.thumbnail.{$product->thumbnail}"));
 });
 
 Route::delete(
@@ -75,6 +80,9 @@ Route::middleware('auth')->group(function() {
     Route::get('checkout', \App\Http\Controllers\CheckoutController::class)->name('checkout');
     Route::post('order', \App\Http\Controllers\OrdersController::class)->name('order.create');
     Route::get('/order/{order}/invoice', \App\Http\Controllers\Invoices\DownloadInvoiceController::class)->name('orders.generate.invoice');
+
+    Route::post('comment/store', [\App\Http\Controllers\CommentsController::class, 'store'])->name('comment.add');
+    Route::post('comment/reply', [\App\Http\Controllers\CommentsController::class, 'reply'])->name('comment.reply');
 
     Route::name('account.')->prefix('account')->group(function() {
         Route::get('/', [\App\Http\Controllers\Account\UsersController::class, 'index'])->name('index');

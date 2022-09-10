@@ -18,7 +18,9 @@ class ProductsController extends Controller
     public function show(Product $product): Renderable
     {
         $userRating = $product->getUserRating();
-        return view('products.show', compact('product', 'userRating'));
+        $comments = $product->comments()->paginate(2);
+
+        return view('products.show', compact('product', 'userRating', 'comments'));
     }
 
     public function addRating(Request $request, Product $product)

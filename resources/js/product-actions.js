@@ -6,9 +6,9 @@ $(document).ready(function (e) {
         $(this).parents('.poststars').submit();
     });
 
-    // $(document).on('click', '.reply', function(e) {
-    //     e.preventDefault();
-    //
-    //     $(this).parent().find('form').removeClass('d-none');
-    // });
+    $(document).on('click', '.reply', function(e) {
+        e.preventDefault();
+
+        $(this).parent().find('form').removeClass('d-none');
+    });
 });
