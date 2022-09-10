@@ -22,7 +22,6 @@ class AwsPublicLinkService implements Contracts\AwsPublicLinkServiceContract
             return (string)$client->createPresignedRequest($cmd, $expiry)->getUri();
         } catch (\Exception $exception) {
             logs()->warning(__CLASS__ . ' => ' . $exception->getMessage());
-
             return '';
         }
     }

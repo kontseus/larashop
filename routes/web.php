@@ -82,6 +82,9 @@ Route::middleware('auth')->group(function() {
     Route::post('order', \App\Http\Controllers\OrdersController::class)->name('order.create');
     Route::get('/order/{order}/invoice', \App\Http\Controllers\Invoices\DownloadInvoiceController::class)->name('orders.generate.invoice');
 
+    Route::post('comment/store', [\App\Http\Controllers\CommentsController::class, 'store'])->name('comment.add');
+    Route::post('comment/reply', [\App\Http\Controllers\CommentsController::class, 'reply'])->name('comment.reply');
+
     Route::name('account.')->prefix('account')->group(function() {
         Route::get('/', [\App\Http\Controllers\Account\UsersController::class, 'index'])->name('index');
         Route::get('{user}/edit', [\App\Http\Controllers\Account\UsersController::class, 'edit'])
